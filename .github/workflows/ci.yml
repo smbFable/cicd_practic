@@ -3,11 +3,11 @@ name: First deploy
 on:
   push:
     branches: [ "main" ]
-  workflows_dispatch:
+  workflow_dispatch:
 
 jobs:
   build-project:
-    runs-on: ubuntu-latest;
+    runs-on: ubuntu-latest
 
     steps:
       - name: Скачиваем репозиторий
@@ -16,7 +16,7 @@ jobs:
       - name: Установка Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.26'
+          go-version: '1.23'
 
       - name: Компиляция кода
         run: go build -v ./...
