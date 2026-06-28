@@ -21,16 +21,16 @@ jobs:
       - name: Компиляция кода
         run: go build -v ./...
 
+      - name: ШПИОН - Проверка видимости секретов
+        run: |
+          if [ -z "${{ secrets.DOCKER_USERNAME }}" ]; then echo "❌ ОШИБКА: Логин ПУСТОЙ (Гитхаб не видит секрет)"; else echo "✅ Логин НАЙДЕН в сейфе"; fi
+          if [ -z "${{ secrets.DOCKER_TOKEN }}" ]; then echo "❌ ОШИБКА: Токен ПУСТОЙ (Гитхаб не видит секрет)"; else echo "✅ Токен НАЙДЕН в сейфе"; fi
+
       - name: Авторизация Dockerhub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
-
-      - name: ШПИОН - Проверка видимости секретов
-        run: |
-          if [ -z "${{ secrets.DOCKER_USERNAME }}" ]; then echo "❌ ОШИБКА: Логин ПУСТОЙ (Гитхаб не видит секрет)"; else echo "✅ Логин НАЙДЕН в сейфе"; fi
-          if [ -z "${{ secrets.DOCKER_TOKEN }}" ]; then echo "❌ ОШИБКА: Токен ПУСТОЙ (Гитхаб не видит секрет)"; else echo "✅ Токен НАЙДЕН в сейфе";
 
       - name: Сборка Docker образа
         run: docker build -t my-go-app:latest .
